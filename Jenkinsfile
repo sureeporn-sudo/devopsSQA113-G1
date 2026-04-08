@@ -15,26 +15,31 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'npm install -g firebase-tools'
-                sh 'firebase --version'
+                sh '/usr/local/bin/node -v'
+                sh '/usr/local/bin/npm -v'
+                sh '/usr/local/bin/npm install -g firebase-tools'
+                sh '/usr/local/bin/firebase --version'
             }
         }
 
         stage('Testing') {
             steps {
-                sh 'firebase use testing && firebase deploy --token "$FIREBASE_TOKEN"'
+                sh '/usr/local/bin/firebase use testing'
+                sh '/usr/local/bin/firebase deploy --token "$FIREBASE_TOKEN"'
             }
         }
 
         stage('Staging') {
             steps {
-                sh 'firebase use staging && firebase deploy --token "$FIREBASE_TOKEN"'
+                sh '/usr/local/bin/firebase use staging'
+                sh '/usr/local/bin/firebase deploy --token "$FIREBASE_TOKEN"'
             }
         }
 
         stage('Production') {
             steps {
-                sh 'firebase use production && firebase deploy --token "$FIREBASE_TOKEN"'
+                sh '/usr/local/bin/firebase use production'
+                sh '/usr/local/bin/firebase deploy --token "$FIREBASE_TOKEN"'
             }
         }
     }
