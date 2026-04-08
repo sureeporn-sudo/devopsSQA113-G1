@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         FIREBASE_TOKEN = credentials('FIREBASE_TOKEN')
+        PATH = "/usr/local/bin:/usr/bin:/bin"
     }
 
     stages {
@@ -15,31 +16,35 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh '/usr/local/bin/node -v'
-                sh '/usr/local/bin/npm -v'
-                sh '/usr/local/bin/npm install -g firebase-tools'
-                sh '/usr/local/bin/firebase --version'
+                sh 'echo $PATH'
+                sh 'which node'
+                sh 'which npm'
+                sh 'which firebase'
+                sh 'node -v'
+                sh 'npm -v'
+                sh 'npm install -g firebase-tools'
+                sh 'firebase --version'
             }
         }
 
         stage('Testing') {
             steps {
-                sh '/usr/local/bin/firebase use testing'
-                sh '/usr/local/bin/firebase deploy --token "$FIREBASE_TOKEN"'
+                sh 'firebase use testing'
+                sh 'firebase deploy --token "$FIREBASE_TOKEN"'
             }
         }
 
         stage('Staging') {
             steps {
-                sh '/usr/local/bin/firebase use staging'
-                sh '/usr/local/bin/firebase deploy --token "$FIREBASE_TOKEN"'
+                sh 'firebase use staging'
+                sh 'firebase deploy --token "$FIREBASE_TOKEN"'
             }
         }
 
         stage('Production') {
             steps {
-                sh '/usr/local/bin/firebase use production'
-                sh '/usr/local/bin/firebase deploy --token "$FIREBASE_TOKEN"'
+                sh 'firebase use production'
+                sh 'firebase deploy --token "$FIREBASE_TOKEN"'
             }
         }
     }
